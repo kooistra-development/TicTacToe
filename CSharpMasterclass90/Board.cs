@@ -30,12 +30,14 @@ namespace CSharpMasterclass90
             { '7', '8', '9' }
         };
 
+        // Constructor
         public Board(int size = 5)
         {
             space = size;
             ex_space = (space - 1) / 2;
         }
 
+        // Public function members
         public void ResetGame()
         {
             table = new char[,]
@@ -45,34 +47,41 @@ namespace CSharpMasterclass90
                 { '7', '8', '9' }
             };
         }
-
-        public bool GameOver()
+        public bool GameOver(ref char player)
         {
-            // check rows
+            // check rows for winner
             for (int row = 0; row < table.GetLength(0); row++)
             {
                 if (table[row, 0] == table[row, 1] && table[row, 1] == table[row, 2])
-                    return true;
+                    return true; // winner
             }
 
-            // check columns
+            // check columns for winner
             for (int column = 0; column < table.GetLength(1); column++)
             {
                 if (table[0, column] == table[1, column] && table[1, column] == table[2, column])
-                    return true;
+                    return true; // winner
             }
 
-            // check diagonal /
+            // check diagonal / for winner
             if (table[0, 2] == table[1, 1] && table[1, 1] == table[2, 0])
-                return true;
+                return true; // winner
 
-            // check diagonal \
+            // check diagonal \ for winner
             if (table[0, 0] == table[1, 1] && table[1, 1] == table[2, 2])
-                return true;
+                return true; // winner
 
-            return false;
+            // if any field is not taken yet...
+            foreach(char field in table)
+            {
+                if (field != 'O' && field != 'X')
+                    return false; // game is not over
+            }
+
+            // all fields are taken but no winner, draw
+            player = '?';
+            return true;
         }
-
         public bool SetField(char player)
         {
             Console.Write("Player {0}: Choose your field > ", player);
@@ -168,12 +177,6 @@ namespace CSharpMasterclass90
 
             return true;
         }
-
-        static void FieldError(string field)
-        {
-            Console.WriteLine("Field {0} is already taken", field);
-        }
-
         public void PrintBoard()
         {
             /*
@@ -199,40 +202,39 @@ namespace CSharpMasterclass90
             DrawBottom();
         }
 
-        private void DrawBottom()
+        // Private function members
+        private void DrawTop()
         {
-            #region bottom
-            Write(bottomleft);
+            #region top
+            Write(topleft);
             for (int i = 0; i < space; i++)
                 Write(hline);
-            Write(bottomT);
+            Write(topT);
             for (int i = 0; i < space; i++)
                 Write(hline);
-            Write(bottomT);
+            Write(topT);
             for (int i = 0; i < space; i++)
                 Write(hline);
-            Write(bottomright);
+            Write(topright);
             Console.WriteLine();
             #endregion
         }
-
-        private void DrawMiddle()
+        private void DrawMidSpacer()
         {
-            #region middle
-            Write(leftT);
+            #region middlespacer
+            Write(vline);
             for (int i = 0; i < space; i++)
-                Write(hline);
-            Write(cross);
+                Console.Write(" ");
+            Write(vline);
             for (int i = 0; i < space; i++)
-                Write(hline);
-            Write(cross);
+                Console.Write(" ");
+            Write(vline);
             for (int i = 0; i < space; i++)
-                Write(hline);
-            Write(rightT);
+                Console.Write(" ");
+            Write(vline);
             Console.WriteLine();
             #endregion
         }
-
         private void DrawMidSpacer(int row)
         {
             #region middlespacer
@@ -258,44 +260,47 @@ namespace CSharpMasterclass90
             Console.WriteLine();
             #endregion
         }
-
-        private void DrawMidSpacer()
+        private void DrawMiddle()
         {
-            #region middlespacer
-            Write(vline);
+            #region middle
+            Write(leftT);
             for (int i = 0; i < space; i++)
-                Console.Write(" ");
-            Write(vline);
+                Write(hline);
+            Write(cross);
             for (int i = 0; i < space; i++)
-                Console.Write(" ");
-            Write(vline);
+                Write(hline);
+            Write(cross);
             for (int i = 0; i < space; i++)
-                Console.Write(" ");
-            Write(vline);
+                Write(hline);
+            Write(rightT);
+            Console.WriteLine();
+            #endregion
+        }
+        private void DrawBottom()
+        {
+            #region bottom
+            Write(bottomleft);
+            for (int i = 0; i < space; i++)
+                Write(hline);
+            Write(bottomT);
+            for (int i = 0; i < space; i++)
+                Write(hline);
+            Write(bottomT);
+            for (int i = 0; i < space; i++)
+                Write(hline);
+            Write(bottomright);
             Console.WriteLine();
             #endregion
         }
 
-        private void DrawTop()
-        {
-            #region top
-            Write(topleft);
-            for (int i = 0; i < space; i++)
-                Write(hline);
-            Write(topT);
-            for (int i = 0; i < space; i++)
-                Write(hline);
-            Write(topT);
-            for (int i = 0; i < space; i++)
-                Write(hline);
-            Write(topright);
-            Console.WriteLine();
-            #endregion
-        }
-
+        // Static functions
         static void Write(int charcode)
         {
             Console.Write((char)charcode);
+        }
+        static void FieldError(string field)
+        {
+            Console.WriteLine("Field {0} is already taken", field);
         }
     }
 }

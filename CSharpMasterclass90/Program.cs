@@ -3,7 +3,7 @@
 Board Game = new Board(5); // 3, 5, 7, 9, 11 etc so (size - 1) is divisible by 2
 
 bool playAgain = true;
-while(playAgain)
+while (playAgain)
 {
     bool gameOver = false;
     char player = 'O';
@@ -20,12 +20,16 @@ while(playAgain)
         while (!Game.SetField(player))
             ;
 
-        gameOver = Game.GameOver();
+        gameOver = Game.GameOver(ref player);
     }
 
     Console.Clear();
     Game.PrintBoard();
-    Console.WriteLine("Player {0} wins", player);
+
+    if(player != '?')
+        Console.WriteLine("Player {0} wins", player);
+    else
+        Console.WriteLine("Draw");
 
     string? input = null;
     while (input == null || input.ToLower() != "n" && input.ToLower() != "y")
