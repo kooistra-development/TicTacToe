@@ -46,7 +46,7 @@ namespace CSharpMasterclass90
             };
         }
 
-        public bool GameOver()
+        public bool GameOver(ref char player)
         {
             // check rows
             for (int row = 0; row < table.GetLength(0); row++)
@@ -70,7 +70,15 @@ namespace CSharpMasterclass90
             if (table[0, 0] == table[1, 1] && table[1, 1] == table[2, 2])
                 return true;
 
-            return false;
+            // if no fields left then draw
+            foreach(char field in table)
+            {
+                if (field != 'O' && field != 'X')
+                    return false;
+            }
+
+            player = '?';
+            return true;
         }
 
         public bool SetField(char player)

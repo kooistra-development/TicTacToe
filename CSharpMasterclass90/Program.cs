@@ -20,12 +20,16 @@ while(playAgain)
         while (!Game.SetField(player))
             ;
 
-        gameOver = Game.GameOver();
+        gameOver = Game.GameOver(ref player);
     }
 
     Console.Clear();
     Game.PrintBoard();
-    Console.WriteLine("Player {0} wins", player);
+
+    if(player != '?')
+        Console.WriteLine("Player {0} wins", player);
+    else
+        Console.WriteLine("Draw");
 
     string? input = null;
     while (input == null || input.ToLower() != "n" && input.ToLower() != "y")
